@@ -10,6 +10,11 @@ import NotificationView from '@/views/NotificationView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: HomeView,
+    },
     
     {
       path: '/notification',
@@ -32,7 +37,7 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/',
+      path: '/feed',
       name: 'feed',
       component: FeedView,
     },

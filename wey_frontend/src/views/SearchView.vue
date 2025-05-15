@@ -62,9 +62,13 @@
                 </div>
             </div>
         </div>
-        <div class="main-right col-span-1">
-            asdaksdasd
+        <div class="main-right col-span-1 space-y-4">
+            <PeopleYouMayKnow />
+            <Trends/>
         </div>
-
     </div>
 </template>
+<script setup>
+import PeopleYouMayKnow from '../components/PeopleYouMayKnow.vue'
+import Trends from '../components/Trends.vue'
+</script>
