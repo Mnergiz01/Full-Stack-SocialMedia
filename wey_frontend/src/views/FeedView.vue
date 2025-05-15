@@ -12,27 +12,25 @@
             </div>
         </div>
         <div class="main-center col-span-2 space-y-4">
-            <div class="p-4 bg-white border border-gray-200 rounded-lg text-center">
-                <div class="p-4">
-                    <textarea class="p-4 w-full bg-gray-100 rounded-lg"
-                        placeholder="Paylaşım Yapmak İster Misiniz ? "></textarea>
-                </div>
-                <div class="p-4 border-t border-gray-100 flex justify-between">
-                    <a href="#"
-                        class="inline-block py-4 px-6 bg-gray-600 text-white rounded-lg hover:bg-gray-900 transation duration-300">Fotoğraf
-                        Ekle</a>
-                    <a href="#"
-                        class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg hover:bg-purple-900 transation duration-300">Post</a>
-                </div>
+            <div class="p-4 bg-white border border-gray-200 rounded-lg">
+                <form method="post" @submit.prevent="submitForm">
+                    <div class="p-4">
+                        <textarea class="p-4 w-full bg-gray-100 rounded-lg"
+                            placeholder="Paylaşım Yapmak İster Misiniz ? " v-model="body"></textarea>
+                    </div>
+                    <div class="p-4 border-t border-gray-100 flex justify-between">
+                        <a href="#"
+                            class="inline-block py-4 px-6 bg-gray-600 text-white rounded-lg hover:bg-gray-900 transation duration-300">Fotoğraf
+                            Ekle</a>
+                        <button href="#"
+                            class="inline-block py-4 px-6 bg-purple-600 text-white rounded-lg hover:bg-purple-900 transation duration-300">Post</button>
+                    </div>
+                </form>
             </div>
-            
-            
-               
-            <div 
-            class="p-4 bg-white border border-gray-200 rounded-lg" 
-            v-for="post in posts" 
-            :key="post.id"
-            >
+
+
+
+            <div class="p-4 bg-white border border-gray-200 rounded-lg" v-for="post in posts" :key="post.id">
                 <div class="mb-6 flex items-center justify-between">
                     <div class="flex items-center space-x-6">
                         <img src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
@@ -73,7 +71,7 @@
                         </div>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
         <div class="main-right col-span-1 space-y-4">
             <PeopleYouMayKnow />
@@ -88,6 +86,7 @@ import PeopleYouMayKnow from '../components/PeopleYouMayKnow.vue'
 import Trends from '../components/Trends.vue'
 
 const posts = ref([])
+const body = ref('')
 
 onMounted(() => {
     getFeed()
@@ -99,6 +98,21 @@ const getFeed = () => {
         posts.value = response.data
     })
         .catch(error => {
+            console.log('error', error)
+        })
+}
+const submitForm = () => {
+    console.log('submitForm :', body.value);
+    axios
+    .post('/api/posts/create/',{
+        'body':body.value
+    })
+    .then(response => {
+        console.log('data',response.data);
+        posts.value.unshift(response.data)
+        body.value=''
+    })
+    .catch(error => {
             console.log('error', error)
         })
 }

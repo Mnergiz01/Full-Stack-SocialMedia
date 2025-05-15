@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from .models import Post
 from .serializers import PostSerializer
+from .forms import PostForm
 
 @api_view(['GET'])
 def post_list(request):
@@ -12,7 +13,13 @@ def post_list(request):
 @api_view(['POST'])
 
 def post_create(request):
-    data=request.data
-    print(data)
-    
-    return JsonResponse({'hello':'hepp'})
+    form = PostForm(request.data)
+    if form.is_valid():
+        post = form.save(commit=False)
+        post.created_by = request.user
+        post.save()
+        serializer = PostSerializer(post)
+        
+        return JsonResponse(serializer.data,safe=False)
+    else:
+        return JsonResponse({'error':'add something here later!...'})
