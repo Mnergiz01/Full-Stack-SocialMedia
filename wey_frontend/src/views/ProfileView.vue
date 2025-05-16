@@ -6,16 +6,20 @@
                     class="mb-6 rounded-full" alt="User Avatar">
                 <p><strong>{{ user.name }}</strong></p>
                 <div class="mt-6 flex space-x-8 justify-around">
-                    <p class="text-xs text-gray-500">182 Arkadaş</p>
+                    <router-link :to="{ name: 'friends', params: { id: user.id } }"
+                        class="text-xs text-gray-500">
+                        182 Arkadaş
+                    </router-link>
                     <p class="text-xs text-gray-500">120 Post</p>
+                </div>
+                <div class="mt-6">
+                    <button class="inline-block py-4 px-3 bg-purple-600 text-xs text-white rounded-lg"
+                        @click="sendFriendshipRequest">Arkadaşlık İsteği Gönder</button>
                 </div>
             </div>
         </div>
         <div class="main-center col-span-2 space-y-4">
-            <div 
-            class="p-4 bg-white border border-gray-200 rounded-lg"
-            v-if="userStore.id === user.id"
-            >
+            <div class="p-4 bg-white border border-gray-200 rounded-lg" v-if="userStore.id === user.id">
                 <form method="post" @submit.prevent="submitForm">
                     <div class="p-4">
                         <textarea class="p-4 w-full bg-gray-100 rounded-lg"
@@ -45,7 +49,7 @@
 </template>
 <script setup>
 import axios from 'axios'
-import { onMounted,onUpdated, ref, watch } from 'vue'
+import { onMounted, onUpdated, ref, watch } from 'vue'
 import PeopleYouMayKnow from '../components/PeopleYouMayKnow.vue'
 import Trends from '../components/Trends.vue'
 import { useUserStore } from '@/stores/user'
@@ -70,7 +74,7 @@ watch(() => route.params.id, (newId, oldId) => {
     }
 })
 onUpdated(() => {
-   // getFeed()
+    // getFeed()
 })
 
 const getFeed = () => {
@@ -98,6 +102,16 @@ const submitForm = () => {
         })
         .catch(error => {
             console.log('error', error)
+        })
+}
+const sendFriendshipRequest = () => {
+    axios.post(`/api/friends/${route.params.id}/request/`)
+        .then(response => {
+            console.log('data', response.data)
+
+        })
+        .catch(error => {
+            console.log('error', error);
         })
 }
 </script>
