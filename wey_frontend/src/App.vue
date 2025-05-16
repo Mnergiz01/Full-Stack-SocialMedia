@@ -67,12 +67,14 @@ onBeforeMount(() => {
       <div class="relative" ref="dropdownRef">
         <template v-if="isAuthenticated">
           <!-- Avatar -->
+           <router-link :to="{name:'profile',params:{'id': userStore.id}}">
           <img
-            @click.stop="toggleDropdown"
+            
             src="https://ui-avatars.com/api/?name=Muzaffer+Nergiz"
             alt="Avatar"
             class="w-10 h-10 rounded-full cursor-pointer"
           />
+        </router-link>
 
           <!-- Dropdown -->
           <transition name="fade">
